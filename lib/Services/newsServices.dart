@@ -62,6 +62,42 @@ Future<List<Result>> getNewsByCategory(String countryCode,String category) async
     throw Exception('Failed to load news');
   }
 }
+Future<List<Result>> getNewsByCategories(String category) async {
+  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&category=$category");
+  var response = await client.get(url);
+
+  if (response.statusCode == 200) {
+    var resp = response.body;
+    var resultsList = json.decode(resp)['results'];
+    
+    if (resultsList is List) {
+      return List<Result>.from(resultsList.map((item) => Result.fromJson(item)));
+    } else {
+      return [];
+    }
+  } else {
+    // Throw an exception and catch it in UI
+    throw Exception('Failed to load news');
+  }
+}
+Future<List<Result>> getNewsEvery() async {
+  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a");
+  var response = await client.get(url);
+
+  if (response.statusCode == 200) {
+    var resp = response.body;
+    var resultsList = json.decode(resp)['results'];
+    
+    if (resultsList is List) {
+      return List<Result>.from(resultsList.map((item) => Result.fromJson(item)));
+    } else {
+      return [];
+    }
+  } else {
+    // Throw an exception and catch it in UI
+    throw Exception('Failed to load news');
+  }
+}
 Future<List<Result>> getAllNews(String language) async {
   var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a");
   var response = await client.get(url);

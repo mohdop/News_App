@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/home.dart';
-import 'package:news_app/pages/test.dart';
 void main() {
   runApp( MyApp());
 }
@@ -19,7 +18,6 @@ class _MyAppState extends State<MyApp> {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        '/test':(context) => Test(),
         "/home":(context) => HomePage(),
       },
       home: HomePage(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/Services/newsServices.dart';
 import 'package:news_app/pages/news_view.dart';
+import 'package:news_app/pages/view_more.dart';
 import 'package:news_app/widgets/color.dart';
 import 'package:news_app/widgets/shimmer_cards.dart';
 import '../models/news.dart';
@@ -82,7 +83,7 @@ class IndividualNewsCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: 150,
+          height: MediaQuery.of(context).size.height*0.8,
           decoration: BoxDecoration(
             color: whitey,
             boxShadow: [
@@ -138,3 +139,4 @@ class IndividualNewsCard extends StatelessWidget {
     );
   }
 }
+
