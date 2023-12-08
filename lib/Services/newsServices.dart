@@ -8,8 +8,8 @@ String baseUrl="https://newsdata.io/api/1/news?";
 class NewsServices{
   var client = http.Client();
 
-  Future<List<Result>> getNews(String language) async {
-  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&category=top&language=fr&language=$language");
+  Future<List<Result>> getNews(String language,String category) async {
+  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&category=$category&language=fr&language=$language");
   var response = await client.get(url);
 
   if (response.statusCode == 200) {

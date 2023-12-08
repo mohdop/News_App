@@ -8,8 +8,8 @@ import 'package:news_app/pages/news_view.dart';
 import 'package:news_app/widgets/color.dart';
 
 class ViewMore extends StatefulWidget {
-  final String category;
-  const ViewMore({super.key, required this.category});
+  final String currentCountryCode;
+  const ViewMore({super.key,required this.currentCountryCode});
 
   @override
   State<ViewMore> createState() => _ViewMoreState();
@@ -20,14 +20,10 @@ class _ViewMoreState extends State<ViewMore> {
   @override
   void initState() { 
     super.initState();
-   getNews(widget.category);
+   getNews(widget.currentCountryCode);
   }
   getNews(String cat)async{
-   if (widget.category == "") {
-     results= await NewsServices().getNewsEvery();
-   }else if(widget.category != ""){
-    results= await NewsServices().getNewsByCategories(widget.category);
-   }
+     results= await NewsServices().getNews(widget.currentCountryCode,"Top");
   }
  @override
 Widget build(BuildContext context) {
@@ -43,14 +39,14 @@ Widget build(BuildContext context) {
       ),
     ),
     body: FutureBuilder(
-      future: getNews(widget.category),
+      future: getNews(widget.currentCountryCode),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator()); // Show a loading indicator
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
-          // Assuming getNews returns void, you might need to modify it
+
           return SingleChildScrollView(
             child: Column(
               children: results?.map((result) {
@@ -71,7 +67,8 @@ Widget build(BuildContext context) {
                             borderRadius: BorderRadius.circular(25),
                             boxShadow: [
                               BoxShadow(
-                                blurRadius: 7,
+                                blurRadius: 4,
+                                color: Colors.grey.withOpacity(0.4),
                               )
                             ]
                           ),

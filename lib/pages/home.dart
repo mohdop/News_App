@@ -18,12 +18,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String currentCountryCode = "Loading...";
+  String clickedBtn="";
   List<Result>? results;
-  List<Result>? cresults;
-  List<Result>? news_everywhere;
-
+  bool isTapped = false;
+  String selectedCategory = "Top";
+  List<String> categories = ["Top", "Technology", "Sports", "Entertainment", "Health", "Business", ];
   final ScrollController _scrollController = ScrollController();
   bool _isVisible = true;
+  bool isClicked=true;
 
   @override
   void initState() {
@@ -41,22 +43,14 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
+  
+
 
   Future<void> initCurrentCountryCode() async {
     try {
       String code = await NewsServices().getCurrentCountryCode();
-      if (results == null) {
-        results = await NewsServices().getNews(code);
-        cresults = await NewsServices().getCountryNews(code);
-        news_everywhere = await NewsServices().getNewsEvery();
-        print('Results fetched: $results');
-      } else {
-        results = await NewsServices().getNews(code);
-        cresults = await NewsServices().getCountryNews(code);
-        news_everywhere = await NewsServices().getNewsEvery();
-
-      }
-
+      // Fetch news based on the selected category
+      results = await NewsServices().getNewsByCategory(code, selectedCategory);
       setState(() {
         currentCountryCode = code.toLowerCase();
       });
@@ -74,93 +68,80 @@ class _HomePageState extends State<HomePage> {
         title: Text("News",style: GoogleFonts.abel(color: purply,fontSize: 22),),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
         controller: _scrollController, 
         child: Column(
           children: [
-           CategoryRow(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Trending ",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
-             
-       InkWell(
-        onTap: () {
-           Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewMore(category: "Top")
-          ));
-        },
-        child: Text('view more',style: GoogleFonts.noticiaText(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
-    
-  ],
-),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: categories.map((category) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                      child: GestureDetector(
+                         onTap: () async {
+                        setState(() {
+                          selectedCategory = category;
+                        });
+                        if (category == "All") {
+                          selectedCategory = "Top";
+                        }
+                        await initCurrentCountryCode();
+                      },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: selectedCategory == category ? blacky : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              category,
+                              style: TextStyle(
+                                  color: selectedCategory == category ? Colors.grey[300] : Colors.grey[500],
+                                  fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Trending ",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
+                   InkWell(
+                    onTap: () {
+             Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewMore(currentCountryCode: currentCountryCode,)
+            ));
+                    },
+                    child: Text('view more',style: GoogleFonts.noticiaText(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
+                
+              ],
+            ),
+          ),
              Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                  
                   SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       children: results?.map((result) {
                         return NewsCard(result: result);
                       }).toList() ?? [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
                     ),
-                  ),            Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Trending in $currentCountryCode",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
-             
-       InkWell(
-        onTap: () {
-           Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewMore(category: "Top")
-          ));
-        },
-        child: Text('view more',style: GoogleFonts.noticiaText(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
-    
-  ],
-),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: cresults?.map((cresult) {
-                        return NewsCard(result: cresult);
-                      }).toList() ?? [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
-                    ),
-                  ),
-                             Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Worldwide",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
-             
-       InkWell(
-         onTap: () {
-           Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewMore(category: "")
-          ));
-        },
-        child: Text('view more',style: GoogleFonts.noticiaText(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
-    
-  ],
-),
-
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: news_everywhere?.map((news_everywhere) {
-                        return NewsCard(result: news_everywhere);
-                      }).toList() ?? [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
-                    ),
-                  ),
-                
+                  ),             
                 ],
               ),
             ),],
