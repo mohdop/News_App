@@ -9,7 +9,7 @@ class NewsServices{
   var client = http.Client();
 
   Future<List<Result>> getNews(String language,String category) async {
-  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&category=$category&language=fr&language=$language");
+  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&category=$category&language=$language");
   var response = await client.get(url);
 
   if (response.statusCode == 200) {
@@ -80,8 +80,8 @@ Future<List<Result>> getNewsByCategories(String category) async {
     throw Exception('Failed to load news');
   }
 }
-Future<List<Result>> getNewsEvery() async {
-  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a");
+Future<List<Result>> getNewsEvery(String lang) async {
+  var url = Uri.parse("https://newsdata.io/api/1/news?apikey=pub_3352193d23b5e4c9531db2c90947e2e1ed31a&language=$lang");
   var response = await client.get(url);
 
   if (response.statusCode == 200) {

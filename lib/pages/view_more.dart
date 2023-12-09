@@ -6,6 +6,7 @@ import 'package:news_app/Services/newsServices.dart';
 import 'package:news_app/models/news.dart';
 import 'package:news_app/pages/news_view.dart';
 import 'package:news_app/widgets/color.dart';
+import 'package:news_app/widgets/lnaguage.dart';
 
 class ViewMore extends StatefulWidget {
   final String currentCountryCode;
@@ -23,7 +24,7 @@ class _ViewMoreState extends State<ViewMore> {
    getNews(widget.currentCountryCode);
   }
   getNews(String cat)async{
-     results= await NewsServices().getNews(widget.currentCountryCode,"Top");
+     results= await NewsServices().getNewsEvery(convertCountryCodeToLanguage(widget.currentCountryCode));
   }
  @override
 Widget build(BuildContext context) {

@@ -123,7 +123,12 @@ class NewsCard extends StatelessWidget {
                       style: GoogleFonts.noticiaText(fontSize: 14),
                     ),
                   ),Padding(padding: EdgeInsets.all(8),
-                  child:Text( result.country != null ?  utf8.decode(result.country!.first.toString().codeUnits).toUpperCase() : ""),
+                  child:Row(
+                    children: [
+                       Icon(Icons.location_pin,color: Colors.grey,),
+                      Text( result.country != null ?  utf8.decode(result.country!.first.toString().codeUnits).toUpperCase() : ""),
+                    ],
+                  ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left:8.0),

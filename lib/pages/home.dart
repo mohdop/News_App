@@ -46,18 +46,37 @@ class _HomePageState extends State<HomePage> {
   
 
 
-  Future<void> initCurrentCountryCode() async {
-    try {
-      String code = await NewsServices().getCurrentCountryCode();
-      // Fetch news based on the selected category
-      results = await NewsServices().getNewsByCategory(code, selectedCategory);
-      setState(() {
-        currentCountryCode = code.toLowerCase();
-      });
-    } catch (e) {
-      print('Error fetching results: $e');
-    }
+bool isFetchingCountryCode = false;
+
+Future<void> initCurrentCountryCode() async {
+  setState(() {
+    isFetchingCountryCode = true;
+  });
+
+  try {
+    String code = await NewsServices().getCurrentCountryCode();
+
+    // Fetch news based on the selected category
+    List<Result> newsResults = await NewsServices().getNewsByCategory(code, selectedCategory);
+
+    // Update UI with the current country code and fetched news
+    setState(() {
+      currentCountryCode = code.toLowerCase();
+      results = newsResults;
+      isFetchingCountryCode = false;
+    });
+  } catch (error) {
+    // Handle errors appropriately
+    print("Error fetching data: $error");
+    setState(() {
+      isFetchingCountryCode = false;
+    });
   }
+}
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,21 +149,20 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-             Padding(
+              Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                 
-                  SingleChildScrollView(
-                    child: Column(
+              child: isFetchingCountryCode
+                  ? Padding(
+                    padding: const EdgeInsets.only(top:250.0),
+                    child: CircularProgressIndicator(),
+                  ) // Show circular progress indicator while loading
+                  : Column(
                       children: results?.map((result) {
                         return NewsCard(result: result);
-                      }).toList() ?? [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
+                      }).toList() ??
+                          [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
                     ),
-                  ),             
-                ],
-              ),
-            ),],
+    ),],
         ),
       ),
       floatingActionButton: AnimatedOpacity(
