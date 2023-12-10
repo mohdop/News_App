@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:news_app/Services/newsServices.dart';
 import 'package:news_app/models/news.dart';
 import 'package:news_app/pages/news_view.dart';
@@ -43,7 +44,9 @@ Widget build(BuildContext context) {
       future: getNews(widget.currentCountryCode),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator()); // Show a loading indicator
+          return Center(child: Lottie.asset(
+                       "assets/animations/newsPaper.json",
+                    ),); 
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {

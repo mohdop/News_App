@@ -8,6 +8,7 @@ import 'package:news_app/widgets/color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/widgets/shimmer_cards.dart';
 import '../widgets/widgets.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<Result>? results;
   bool isTapped = false;
   String selectedCategory = "Top";
-  List<String> categories = ["Top", "Technology", "Sports", "Entertainment", "Health", "Business", ];
+  List<String> categories = ["Top", "Technology", "Sports", "Entertainment", "Health", "Business","Science","Environment","Food" ];
   final ScrollController _scrollController = ScrollController();
   bool _isVisible = true;
   bool isClicked=true;
@@ -153,8 +154,11 @@ Future<void> initCurrentCountryCode() async {
               padding: const EdgeInsets.all(8.0),
               child: isFetchingCountryCode
                   ? Padding(
-                    padding:  EdgeInsets.only(top:250.0),
-                    child: CircularProgressIndicator(),
+                    padding:const  EdgeInsets.only(top:250.0),
+                    child: Lottie.asset(
+                       "assets/animations/newsPaper.json",
+                        
+                    ),
                   ) 
                   : Column(
                       children: results?.map((result) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/home.dart';
+import 'package:news_app/pages/splashScreen.dart';
 void main() {
   runApp( const MyApp());
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         "/home":(context) => const HomePage(),
       },
-      home: const HomePage(),
+      home: const SplashScreen(),
     );
   }
 }
