@@ -153,9 +153,9 @@ Future<void> initCurrentCountryCode() async {
               padding: const EdgeInsets.all(8.0),
               child: isFetchingCountryCode
                   ? Padding(
-                    padding: const EdgeInsets.only(top:250.0),
+                    padding:  EdgeInsets.only(top:250.0),
                     child: CircularProgressIndicator(),
-                  ) // Show circular progress indicator while loading
+                  ) 
                   : Column(
                       children: results?.map((result) {
                         return NewsCard(result: result);
