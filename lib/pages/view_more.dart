@@ -10,8 +10,8 @@ import 'package:news_app/widgets/color.dart';
 import 'package:news_app/widgets/lnaguage.dart';
 
 class ViewMore extends StatefulWidget {
-  final String currentCountryCode;
-  const ViewMore({super.key,required this.currentCountryCode});
+  final String category;
+  const ViewMore({super.key,required this.category});
 
   @override
   State<ViewMore> createState() => _ViewMoreState();
@@ -19,14 +19,43 @@ class ViewMore extends StatefulWidget {
 
 class _ViewMoreState extends State<ViewMore> {
   List<Result>? results;
+  String currentCountryCode = "us";
   @override
   void initState() { 
     super.initState();
-   getNews(widget.currentCountryCode);
+   getNews(widget.category);
+   initCurrentCountryCode();
   }
   getNews(String cat)async{
-     results= await NewsServices().getNewsEvery(convertCountryCodeToLanguage(widget.currentCountryCode));
+    results= await NewsServices().getNewsByCategories(cat,currentCountryCode);
   }
+
+  
+
+bool isFetchingCountryCode = false;
+
+Future<void> initCurrentCountryCode() async {
+  setState(() {
+    isFetchingCountryCode = true;
+  });
+
+  try {
+    String code = await NewsServices().getCurrentCountryCode();
+
+    // Update UI with the current country code and fetched news
+    setState(() {
+      currentCountryCode = code.toLowerCase();
+      isFetchingCountryCode = false;
+    });
+  } catch (error) {
+    // Handle errors appropriately
+    print("Error fetching data: $error");
+    setState(() {
+      isFetchingCountryCode = false;
+    });
+  }
+}
+
  @override
 Widget build(BuildContext context) {
   return Scaffold(
@@ -41,7 +70,7 @@ Widget build(BuildContext context) {
       ),
     ),
     body: FutureBuilder(
-      future: getNews(widget.currentCountryCode),
+      future: getNews(widget.category),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: Lottie.asset(
@@ -63,7 +92,7 @@ Widget build(BuildContext context) {
                           MaterialPageRoute(
                             builder: (context) => NewsDetails(result: result,),
                           ));
-                          },
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
@@ -100,7 +129,7 @@ Widget build(BuildContext context) {
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.noticiaText(fontSize: 14, fontWeight:FontWeight.w900),
                                       ),
-                                      SizedBox(height: 6,),
+                                     SizedBox(height: 6,),
                                       Text(
                                         utf8.decode(result.description.toString().codeUnits),
                                         maxLines: 2,

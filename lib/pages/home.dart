@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<Result>? results;
   bool isTapped = false;
   String selectedCategory = "Top";
-  List<String> categories = ["Top", "Technology", "Sports", "Entertainment", "Health", "Business","Science","Environment","Food" ];
+  List<String> categories = ["Top","World","Tourism","Politics", "Technology", "Sports", "Entertainment", "Health", "Business","Science","Environment","Food" ];
   final ScrollController _scrollController = ScrollController();
   bool _isVisible = true;
   bool isClicked=true;
@@ -56,7 +56,6 @@ Future<void> initCurrentCountryCode() async {
 
   try {
     String code = await NewsServices().getCurrentCountryCode();
-
     // Fetch news based on the selected category
     List<Result> newsResults = await NewsServices().getNewsByCategory(code, selectedCategory);
 
@@ -85,7 +84,14 @@ Future<void> initCurrentCountryCode() async {
       
       appBar: AppBar(
         centerTitle: true,
-        title: Text("News",style: GoogleFonts.abel(color: purply,fontSize: 22),),
+        title: Icon(CupertinoIcons.home,color: purply,size: 35,),
+        actions: [
+          
+          IconButton(onPressed: (){
+            Navigator.pushNamed(context, "/source");
+          }, icon: Icon(CupertinoIcons.news,color: purply,size: 32,)),
+        
+        ],
       ),
       body: SingleChildScrollView(
         controller: _scrollController, 
@@ -119,7 +125,8 @@ Future<void> initCurrentCountryCode() async {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               category,
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
                                   color: selectedCategory == category ? Colors.grey[300] : Colors.grey[500],
                                   fontSize: 18),
                             ),
@@ -136,16 +143,16 @@ Future<void> initCurrentCountryCode() async {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Trending ",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
+                Text("Trending ",style: GoogleFonts.poppins(color: blacky,fontWeight: FontWeight.bold,fontSize: 22),),
                    InkWell(
                     onTap: () {
              Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ViewMore(currentCountryCode: currentCountryCode,)
+              builder: (context) => ViewMore(category: selectedCategory.toString())
             ));
                     },
-                    child: Text('view more',style: GoogleFonts.noticiaText(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
+                    child: Text('view more',style: GoogleFonts.poppins(color: purply,fontSize: 18,fontWeight: FontWeight.w500),)),
                 
               ],
             ),
@@ -157,14 +164,13 @@ Future<void> initCurrentCountryCode() async {
                     padding:const  EdgeInsets.only(top:250.0),
                     child: Lottie.asset(
                        "assets/animations/newsPaper.json",
-                        
                     ),
                   ) 
                   : Column(
                       children: results?.map((result) {
                         return NewsCard(result: result);
                       }).toList() ??
-                          [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard()],
+                          [ShimmerNewsCard(), ShimmerNewsCard(), ShimmerNewsCard(),ShimmerNewsCard(), ShimmerNewsCard(),ShimmerNewsCard(), ShimmerNewsCard(),],
                     ),
     ),],
         ),
@@ -181,7 +187,7 @@ Future<void> initCurrentCountryCode() async {
               curve: Curves.easeInOut,
             );
           },
-          child: Icon(CupertinoIcons.up_arrow),
+          child: Icon(CupertinoIcons.up_arrow,color: whitey,),
         ),
       ),
     );

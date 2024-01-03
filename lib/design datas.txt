@@ -1,3 +1,0 @@
-fonts: Oswald, Merriweather, Libre Baskerville
-
-Colors:

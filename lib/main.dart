@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/pages/Auth/Login.dart';
+import 'package:news_app/pages/Auth/Signup.dart';
 import 'package:news_app/pages/home.dart';
+import 'package:news_app/pages/searchNews.dart';
+import 'package:news_app/pages/source.dart';
 import 'package:news_app/pages/splashScreen.dart';
+
 void main() {
-  runApp( const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return  MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: {
-        "/home":(context) => const HomePage(),
-      },
-      home: const SplashScreen(),
-    );
-  }
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home:SplashScreen() ,
+    routes: {
+      "/home": (context) => const HomePage(),
+      "/splash": (context) => const SplashScreen(),
+      "/login": (context) => const Login(),
+      "/register": (context) => const Register(),
+      "/search":(context) => const SearchNews(),
+      "/source":(context) => const NewsSource(),
+    },
+  ));
 }

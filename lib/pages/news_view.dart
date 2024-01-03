@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/pages/source_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/models/news.dart';
@@ -70,23 +71,31 @@ launchURL(String url) async {
 
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                        widget.result?.sourceId!.isNotEmpty == true
-                            ? widget.result!.sourceId!
+                  ElevatedButton(onPressed: (){
+                    
+                  }, 
+                  style: ButtonStyle(
+                    backgroundColor:MaterialStateProperty.all<Color>(blacky!)
+                  ),
+                  child:Text(
+                        widget.result.sourceId!.isNotEmpty == true
+                            ? widget.result.sourceId!
                             : "Source unknown",  // Use the conditional operator to check for null or empty list
-                        style: GoogleFonts.poppins(fontSize: 14,fontWeight: FontWeight.bold),
-                      ), Padding(
+                        style: GoogleFonts.poppins(fontSize: 14,fontWeight: FontWeight.bold,color: whitey),
+                      ), ),
+                   Padding(
                       padding: const EdgeInsets.only(left:28.0),
                       child: Text(
                         widget.result.category?.isNotEmpty == true
                                             ?'•'+ widget.result.category!.map((cat) => cat.toString().split('.').last).join(', ')
                                             : '', // Use the conditional operator to check for null or empty list
-                        style: GoogleFonts.poppins(fontSize: 14,),
+                        style: GoogleFonts.poppins(fontSize: 14,color: purply),
                       ),
                     )
                 ],
-              ),
+              ),SizedBox(height: MediaQuery.of(context).size.height*0.03,),
               Text(
                 utf8.decode(widget.result.title.toString().codeUnits),
                 style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold,fontSize: 18,),
@@ -98,42 +107,45 @@ launchURL(String url) async {
                 height: 225,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
-                  image: DecorationImage(image: widget.result.imageUrl !=null  
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: widget.result.imageUrl !=null  
                   ?NetworkImage("${widget.result.imageUrl}") 
                   : AssetImage("assets/images/news.jpg") as ImageProvider)
                 ),
               ),Text("Description: ",style: GoogleFonts.noticiaText(fontSize: 18,fontWeight: FontWeight.bold),),
               SizedBox(height: 20,),
                Text(
-                utf8.decode(widget.result.description.toString().codeUnits),
+                widget.result.description == null ? "This article's description is not available":utf8.decode(widget.result.description.toString().codeUnits),
                 style: GoogleFonts.noticiaText(color: Colors.black,fontSize: 16),
                 overflow: TextOverflow.visible,
                 maxLines:null 
                 ,),Text("Content: ",style: GoogleFonts.noticiaText(fontSize: 18,fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
                Text(
-                utf8.decode(widget.result.content.toString().codeUnits),
+                widget.result.content == null 
+                ?"This article's content is not available "
+                :utf8.decode(widget.result.content.toString().codeUnits), 
                 style: GoogleFonts.noticiaText(color: Colors.black,fontSize: 16),
                 overflow: TextOverflow.visible,
                 maxLines:null 
                 ,),
               SizedBox(height: 40,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                          launch(widget.result.link.toString());
-                        },
-                    child: Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: purply,
-                        borderRadius: BorderRadius.circular(16)
-                      ),
-                      child: Center(
-                        child: Text("Go to website",style: GoogleFonts.noticiaText(fontSize: 18,fontWeight: FontWeight.bold,color: whitey)),
-                      ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: GestureDetector(
+                  onTap: () {
+                        launch(widget.result.link.toString());
+                      },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height*0.06,
+                    width: MediaQuery.of(context).size.width*0.5,
+                    decoration: BoxDecoration(
+                      color: purply,
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    child: Center(
+                      child: Text("Read from website",style: GoogleFonts.noticiaText(fontSize: 18,fontWeight: FontWeight.bold,color: whitey)),
                     ),
                   ),
                 ),
@@ -146,16 +158,17 @@ launchURL(String url) async {
       ),
        floatingActionButton: showFab
           ? Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomRight,
               child: Container(
-                width: 200, // Adjust the width as needed
-                child: FloatingActionButton.extended(
+                width: MediaQuery.of(context).size.width * 0.1, // Adjust the width as needed
+                child: FloatingActionButton(
                   backgroundColor: purply,
                   onPressed: () {
                     _scrollToTop();
                   },
-                  icon: Icon(CupertinoIcons.arrow_up_circle, color: whitey,),
-                  label: Text("Go Back Up", style: TextStyle(color: whitey)),
+                  child: Icon(CupertinoIcons.arrow_up_circle, color: whitey,),
+                  
+                  
                 ),
               ),
             )

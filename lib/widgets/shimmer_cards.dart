@@ -21,27 +21,39 @@ class ShimmerNewsCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Adjust the height according to your design
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            // Adjust the height according to your design
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 16,
                 color: Colors.white,
               ),
             ),
             // Adjust the height according to your design
-            Container(
-              height: 16,
-              color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 40,
+                color: Colors.white,
+              ),
             ),
             // Adjust the height according to your design
-            Container(
-              height: 40,
-              color: Colors.white,
-            ),
-            // Adjust the height according to your design
-            Container(
-              height: 16,
-              color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 16,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
