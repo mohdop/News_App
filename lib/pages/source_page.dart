@@ -58,6 +58,7 @@ class _SourcePageState extends State<SourcePage> {
                          child:  CircleAvatar(
                           backgroundImage: iconUrl == null? NetworkImage("https://littlebeam.com/cdn/shop/articles/Dark_Blue_Red_White_Generic_News_General_News_Logo.png?v=1691342691"): NetworkImage("${iconUrl?.url}"),
                           radius: 80,
+                          backgroundColor: whitey,
                         ),
                       ),
                       SizedBox(height: 20,),

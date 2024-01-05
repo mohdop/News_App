@@ -40,7 +40,11 @@ class _NewsSourceState extends State<NewsSource> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: whitey,
+         centerTitle: true,
+        title: Text("News sources",style: GoogleFonts.noticiaText(color: blacky,fontWeight: FontWeight.bold),),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

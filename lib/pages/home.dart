@@ -86,11 +86,14 @@ Future<void> initCurrentCountryCode() async {
         centerTitle: true,
         title: Icon(CupertinoIcons.home,color: purply,size: 35,),
         actions: [
-          
-          IconButton(onPressed: (){
-            Navigator.pushNamed(context, "/source");
-          }, icon: Icon(CupertinoIcons.news,color: purply,size: 32,)),
-        
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(onPressed: ()
+            {
+              Navigator.pushNamed(context, "/source");
+            }, icon: Icon(CupertinoIcons.news_solid,color: purply,size: 32,)
+                          ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
